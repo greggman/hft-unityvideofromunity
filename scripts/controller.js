@@ -62,11 +62,11 @@ requirejs([
 
   // Note: CommonUI handles these events for almost all the samples.
   var onConnect = function() {
-    statusElem.innerHTML = "you've connected to the relayserver";
+    statusElem.innerHTML = "you've connected to happyfuntimes";
   };
 
   var onDisconnect = function() {
-    statusElem.innerHTML = "you were disconnected from the relayserver";
+    statusElem.innerHTML = "you were disconnected from happyfuntimes";
   }
 
   // If I was going to handle this without CommonUI this is what I'd do
