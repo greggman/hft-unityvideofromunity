@@ -38,11 +38,15 @@ class ExampleSimplePlayer : MonoBehaviour {
 
     [CmdName("video")]
     private class MessageVideo : MessageCmdData {
-        public MessageVideo(int w, int h, int[] data) {
+        public MessageVideo(int ow, int oh, int w, int h, int[] data) {
+            origWidth = ow;
+            origHeight = oh;
             width = w;
             height = h;
             pixels = data;
         }
+        public int origWidth = 0;
+        public int origHeight = 0;
         public int width = 0;
         public int height = 0;
         public int[] pixels;
@@ -88,7 +92,7 @@ class ExampleSimplePlayer : MonoBehaviour {
         WebCamTexture camTex = settings.camTexture;
         m_video.Update(camTex);
         IntRect data = m_video.Get();
-        m_netPlayer.SendCmd(new MessageVideo(data.width, data.height, data.pixels));
+        m_netPlayer.SendCmd(new MessageVideo(camTex.width, camTex.height, data.width, data.height, data.pixels));
     }
 
     public void Update() {

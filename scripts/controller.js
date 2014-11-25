@@ -121,12 +121,23 @@ requirejs([
 
   var videoPixels;
   client.addEventListener('video', function(data) {
+    // Resize the canvas to match the size of the video's data
     if (videoElem.width != data.width ||
         videoElem.height != data.height) {
       videoElem.width = data.width;
       videoElem.height = data.height;
     }
 
+    // Compute the height we want to display the canvas give the height of the original video
+    // Note: The CSS says the canvas's width is 100% of its container
+    var width = videoElem.clientWidth;   // The current display width of the canvas
+    var height = Math.floor(width * data.origHeight / data.origWidth);
+    if (videoElem.clientHeight != height) {
+      videoElem.style.height = height + "px";
+    }
+
+    // If we haven't allocated videoPixels yet OR if the size doesn't match
+    // (re)allocate it.
     if (!videoPixels || videoPixels.width != data.width || videoPixels.height != data.height) {
       videoPixels = videoCtx.createImageData(data.width, data.height);
 
@@ -142,6 +153,7 @@ requirejs([
       }
     }
 
+    // Copy the video data into videoPixels
     var pixels = videoPixels.data;
     for (var yy = 0; yy < data.height; ++yy) {
       for (var xx = 0; xx < data.width; ++xx) {
@@ -153,6 +165,7 @@ requirejs([
       }
     }
 
+    // Draw videoPixels into the canvas.
     videoCtx.putImageData(videoPixels, 0, 0);
   });
 });
